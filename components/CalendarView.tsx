@@ -9,7 +9,7 @@ interface CalendarViewProps {
 }
 
 const CalendarView: React.FC<CalendarViewProps> = ({ year, month, store, events }) => {
-  const firstDayOfMonth = new Date(year, month - 1, 1).getDay(); // 0 (Sun) - 6 (Sat)
+  const firstDayOfMonth = new Date(year, month - 1, 1).getDay();
   const daysInMonth = new Date(year, month, 0).getDate();
 
   const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
@@ -55,22 +55,20 @@ const CalendarView: React.FC<CalendarViewProps> = ({ year, month, store, events 
     return d.getFullYear() === year && (d.getMonth() + 1) === month;
   };
 
-  // ... 상단 로직 동일 ...
-
   return (
     <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden block">
-      {/* 헤더 부분: 모바일에서 글자 크기 최적화 */}
-      <div className="bg-green-700 text-white px-3 py-2 sm:px-6 sm:py-3 font-bold flex flex-col sm:flex-row justify-between items-center gap-1">
-        <span className="text-xs sm:text-base">MONTHLY CALENDAR</span>
-        <div className="flex gap-2 sm:gap-4 text-[9px] sm:text-[10px]">
-          <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-red-400"></span> 주요</span>
-          <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span> 신규</span>
-          <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-black"></span> 종료</span>
+      {/* 상단 헤더: 모바일에서 세로 배치 방지 및 텍스트 축소 */}
+      <div className="bg-green-700 text-white px-3 py-2 sm:px-6 sm:py-3 font-bold flex flex-row justify-between items-center gap-1">
+        <span className="text-[10px] sm:text-base tracking-tighter sm:tracking-normal">MONTHLY CALENDAR</span>
+        <div className="flex gap-1.5 sm:gap-4 text-[8px] sm:text-[10px]">
+          <span className="flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-red-400"></span> 주요</span>
+          <span className="flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span> 신규</span>
+          <span className="flex items-center gap-0.5"><span className="w-1.5 h-1.5 rounded-full bg-black"></span> 종료</span>
         </div>
       </div>
-      
+
       <div className="p-1 sm:p-4">
-        {/* 요일 헤더: 폰트 크기 미세 조정 */}
+        {/* 요일 행: 폰트 크기 및 패딩 최적화 */}
         <div className="grid grid-cols-7 bg-slate-100 rounded-t-lg border-x border-t border-gray-200">
           {['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'].map((day, idx) => (
             <div key={day} className={`py-1 sm:py-2 text-center text-[8px] sm:text-[11px] font-black ${idx === 0 ? 'text-red-500' : 'text-slate-600'}`}>
@@ -79,36 +77,35 @@ const CalendarView: React.FC<CalendarViewProps> = ({ year, month, store, events 
           ))}
         </div>
 
-        {/* 달력 그리드: 최소 높이를 모바일에서 더 낮게 조절 (60px) */}
+        {/* 달력 본문: min-h를 대폭 줄여 모바일 스크롤 최소화 */}
         <div className="grid grid-cols-7 border-l border-t border-gray-200 rounded-b-lg bg-white">
           {emptySlots.map((_, i) => (
-            <div key={`empty-${i}`} className="min-h-[60px] sm:min-h-[100px] md:min-h-[120px] bg-gray-50 border-r border-b border-gray-100"></div>
+            <div key={`empty-${i}`} className="min-h-[50px] sm:min-h-[100px] md:min-h-[120px] bg-gray-50 border-r border-b border-gray-100"></div>
           ))}
 
           {days.map((day) => {
             const dayEvents = getDayEvents(day);
             return (
-              <div key={day} className="min-h-[60px] sm:min-h-[100px] md:min-h-[120px] border-r border-b border-gray-200 p-0.5 sm:p-2 hover:bg-slate-50 transition-colors group">
+              <div key={day} className="min-h-[50px] sm:min-h-[100px] md:min-h-[120px] border-r border-b border-gray-200 p-0.5 sm:p-2 hover:bg-slate-50 transition-colors group">
                 <span className="text-[9px] sm:text-[10px] font-bold text-gray-400 group-hover:text-slate-600">{day}</span>
                 <div className="flex flex-col gap-0.5 mt-0.5">
                   {dayEvents.map((ev, idx) => {
-                    let badgeClass = 'bg-gray-100 text-gray-500';
+                    let badgeClass = 'bg-gray-100 text-gray-500 border-gray-200';
                     const isExp = isExpiringThisMonth(ev);
                     
                     if (isExp) {
-                      badgeClass = 'bg-black text-white font-bold';
+                      badgeClass = 'bg-black text-white font-bold border-black';
                     } else if (ev.major_category === '주요 프로모션') {
-                      badgeClass = 'bg-red-100 text-red-700 font-bold border-red-200';
+                      badgeClass = 'bg-red-50 text-red-700 font-bold border-red-100';
                     } else if (isNewPromotion(ev)) {
-                      badgeClass = 'bg-blue-100 text-blue-700 font-bold border-blue-200';
+                      badgeClass = 'bg-blue-50 text-blue-700 font-bold border-blue-100';
                     }
 
                     return (
                       <div 
                         key={idx} 
-                        // truncate를 유지하되 모바일에서 텍스트가 너무 작으면 leading을 조절
-                        className={`text-[7px] sm:text-[9px] p-0.5 rounded leading-tight truncate border ${badgeClass}`}
-                        title={ev.title} // 마우스 올리면 전체 제목 보이게
+                        className={`text-[7px] sm:text-[9px] p-[1px] sm:p-0.5 rounded leading-[1.1] truncate border ${badgeClass}`}
+                        title={ev.title}
                       >
                         {ev.title}
                       </div>
@@ -122,4 +119,6 @@ const CalendarView: React.FC<CalendarViewProps> = ({ year, month, store, events 
       </div>
     </div>
   );
+};
+
 export default CalendarView;
