@@ -10,7 +10,7 @@ import { PromotionEvent } from './types';
 const API_URL = 'https://script.google.com/macros/s/AKfycbwxPt4QUPyeVOSL3Bc_McZdPNeKaq1J03M1716m0wWJCZHZ8zO3OGW0JZ1vkT-4jbnM/exec';
 
 // Actual store names to check in the row data
-const REAL_STORES = ["강서", "고척", "공덕", "광화문", "목동", "서초", "이대", "판교", "흑석", "한남"];
+const REAL_STORES = ["강서", "고척", "공덕", "광화문", "목동", "서초", "이대", "판교", "흑석", "한남", "타임스퀘어" ];
 
 const App: React.FC = () => {
   // State
