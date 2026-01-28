@@ -2,7 +2,7 @@ import { PromotionEvent, StoreName } from './types';
 
 export const MATRIX_CATEGORIES = ["VMD", "배달", "베이커리", "송출", "시즌", "오프라인", "쿠폰", "판매", "플레이스", "홍보", "환경"];
 
-export const STORE_LIST: StoreName[] = ["전매장", "강서", "고척", "공덕", "광화문", "목동", "서초", "이대", "판교", "흑석", "한남"];
+export const STORE_LIST: StoreName[] = ["전매장", "강서", "고척", "공덕", "광화문", "목동", "서초", "이대", "판교", "흑석", "한남", "타임스퀘어" ];
 
 export const DB: PromotionEvent[] = [
   // 주요 프로모션
