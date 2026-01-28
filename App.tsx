@@ -7,7 +7,7 @@ import { DB } from './constants';
 import { PromotionEvent } from './types';
 
 // Apps Script Web App API URL
-const API_URL = 'https://script.google.com/macros/s/AKfycbw5N9xKl2-cq8dA74OlnNlrDZLkcC-HWnv93OCM94litLVWP9FUjDYrYhnmg1BYX_5w/exec';
+const API_URL = 'https://script.google.com/macros/library/d/1TmVnwFgNxqRFqx98mA9bHP65hU-OBzYtPRIdbd5J49coHDr0coVJ4fAI/1';
 
 // Actual store names to check in the row data
 const REAL_STORES = ["강서", "고척", "공덕", "광화문", "목동", "서초", "이대", "판교", "흑석", "한남"];
